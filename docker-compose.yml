@@ -12,7 +12,7 @@ services:
       - db:/var/lib/postgresql/data
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     restart: unless-stopped
     depends_on:
       - db
@@ -22,10 +22,10 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - pgadmin:/var/lib/pgadmin    
+      - pgadmin:/var/lib/pgadmin
 
 volumes:
   db:
     driver: local
   pgadmin:
-    driver: local  
+    driver: local
