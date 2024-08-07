@@ -1,4 +1,4 @@
-package ask
+package main
 
 import (
 	"context"
@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+
+	"github.com/medanielsantos/ask/internal/api"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
@@ -18,7 +20,9 @@ func main() {
 		panic(err)
 	}
 
-	pool, err := pgxpool.New(context.Background(), fmt.Sprintf(
+	ctx := context.Background()
+
+	pool, err := pgxpool.New(ctx, fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
@@ -37,7 +41,7 @@ func main() {
 		panic(err)
 	}
 
-	handler := api.newHandler(pgstore.New(pool))
+	handler := api.NewHandler(pgstore.New(pool))
 
 	go func() {
 		if err := http.ListenAndServe(":8080", handler); err != nil {
@@ -50,4 +54,5 @@ func main() {
 	quit := make(chan os.Signal, 1)
 
 	signal.Notify(quit, os.Interrupt)
+	<-quit
 }

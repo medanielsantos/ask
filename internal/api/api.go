@@ -17,7 +17,7 @@ func (h apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func newHandler(q *pgstore.Queries) http.Handler {
+func NewHandler(q *pgstore.Queries) http.Handler {
 	a := apiHandler{
 		q: q,
 	}
